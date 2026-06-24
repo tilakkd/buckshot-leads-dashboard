@@ -82,10 +82,13 @@
 
   <div class="sec"><span class="bul" style="background:#c98a16"></span><h2>Call Leads (Phone)</h2><span class="view">this period</span></div>
   <div class="grid c2">
-    <div class="card ov"><div class="l">Phone Calls</div><div class="v" id="callTotal">-</div><div class="s">All call conversions - Google Ads (this period)</div>
+    <div class="card ov"><div class="l">Phone Calls (Ads)</div><div class="v" id="callTotal">-</div><div class="s">All call conversions - Google Ads (this period)</div>
       <div class="win"><div class="w"><div class="wl">Calls from Ads</div><div class="wv" id="callAds">-</div></div><div class="w"><div class="wl">Call Clicks</div><div class="wv" id="callClicks">-</div></div></div></div>
-    <div class="card" style="display:flex;align-items:center"><div class="src" style="font-size:11.5px;line-height:1.7">Without website call-tracking (GFN), website number taps count as <b>call clicks</b> (intent), not connected calls. <b>Calls from Ads</b> = actual connected calls via the ad call asset. LSA calls tracked separately (not included yet).</div></div>
+    <div class="card ov"><div class="l">LSA Leads</div><div class="v" id="lsaTotal">-</div><div class="s">Local Services Ads leads (this period)</div>
+      <div class="win"><div class="w"><div class="wl">Phone</div><div class="wv" id="lsaPhone">-</div></div><div class="w"><div class="wl">Message</div><div class="wv" id="lsaMsg">-</div></div></div></div>
   </div>
+
+  <div class="src" style="margin-top:9px;font-size:11px;line-height:1.6">Phone Calls: without website call-tracking (GFN) website number taps count as <b>call clicks</b> (intent); <b>Calls from Ads</b> = connected calls via the ad call asset. <b>LSA Leads</b> = calls/messages from Local Services Ads (separate account).</div>
 
   <div class="sec"><span class="bul" style="background:var(--brand)"></span><h2>All Leads</h2><span class="view" id="leadcount">-</span></div>
   <div class="tablecard">
@@ -94,7 +97,7 @@
   </div>
 
   <footer>
-    Period filter applies to the whole dashboard. Channel: <b>Paid</b> = ad click (gclid / utm cpc); <b>Organic</b> = everything else. Form leads: Flamingo (test and B2B-solicitation excluded). Phone calls and Ads spend: Google Ads account (exact). LSA tracked separately.
+    Period filter applies to the whole dashboard. Channel: <b>Paid</b> = ad click (gclid / utm cpc); <b>Organic</b> = everything else. Form leads: Flamingo (test and B2B-solicitation excluded). Phone calls and Ads spend: Google Ads account (exact). LSA leads from Local Services Ads (account 4026037149).
   </footer>
 </div>
 
@@ -104,6 +107,7 @@ var WIN={from:"2026-03-27",to:"2026-06-24"};
 var SPEND={"2026-06":4751.62,"2026-05":923.06,"2026-04":3233.54,"2026-03":257.72};
 var ALL_SPEND=9165.94;
 var CALLS={"2026-06":{ads:0,cc:1,web:2},"2026-05":{ads:0,cc:0,web:0},"2026-04":{ads:2,cc:0,web:0},"2026-03":{ads:0,cc:0,web:0}};
+var LSA={"2026-06":{ph:0,msg:0},"2026-05":{ph:3,msg:0},"2026-04":{ph:5,msg:1},"2026-03":{ph:0,msg:0}};
 var PAID=new Set(["Sue Moe","Brian L Sarenpa","Megan LaRocque","Darlene Harper","Erik Linklater"]);
 var LEADS=[
  {d:"2026-06-23",n:"Sue Moe",sv:"Roofing (leak)"},{d:"2026-06-22",n:"Brian L Sarenpa",sv:"Roofing (hail)"},
@@ -142,6 +146,7 @@ function chOf(l){return PAID.has(l.n)?"paid":"organic";}
 var mf="all", q="", chart=null;
 
 function sumCalls(){var a=0,c=0,w=0;for(var k in CALLS){a+=CALLS[k].ads;c+=CALLS[k].cc;w+=CALLS[k].web;}return {ads:a,cc:c,web:w};}
+function sumLSA(){var p=0,m=0;for(var k in LSA){p+=LSA[k].ph;m+=LSA[k].msg;}return {ph:p,msg:m};}
 function scopeLeads(){return mf==="all"?LEADS:LEADS.filter(function(l){return l.d.slice(0,7)===mf;});}
 function spendOf(){return mf==="all"?ALL_SPEND:(SPEND[mf]||0);}
 function range(){
@@ -196,6 +201,10 @@ function renderAll(){
   document.getElementById("callTotal").textContent=callAds+callClk;
   document.getElementById("callAds").textContent=callAds;
   document.getElementById("callClicks").textContent=callClk;
+  var lm = mf==="all" ? sumLSA() : (LSA[mf]||{ph:0,msg:0});
+  document.getElementById("lsaTotal").textContent=lm.ph+lm.msg;
+  document.getElementById("lsaPhone").textContent=lm.ph;
+  document.getElementById("lsaMsg").textContent=lm.msg;
   document.getElementById("chTitle").textContent="Leads per day - "+(mf==="all"?"Mar 27 to Jun 24":monthLbl(mf));
   buildChart();
   renderTable();
