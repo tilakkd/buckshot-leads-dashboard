@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Buckshot — Leads Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#eef1f5; --card:#fff; --line:#e4e9f0; --line2:#eef1f5;
+    --ink:#16202b; --ink2:#36465a; --mut:#6f7d8c; --faint:#9aa6b3;
+    --navy:#1f3a5f; --brand:#c8472b; --paid:#2f6fb0; --organic:#2f9e6b;
+    --shadow:0 1px 2px rgba(16,32,48,.04),0 2px 10px rgba(16,32,48,.05);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:13px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:22px 20px 60px}
+  .banner{background:linear-gradient(120deg,#1c3a5e,#28547f 60%,#2f6191);border-radius:14px;padding:22px 26px;color:#fff;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;box-shadow:var(--shadow)}
+  .banner h1{font-size:21px;font-weight:750;letter-spacing:-.3px}
+  .banner .sub{font-size:12px;color:#bcd0e6;margin-top:4px}
+  .banner .rp{text-align:right;font-size:11.5px;color:#bcd0e6}
+  .banner .rp .lab{text-transform:uppercase;letter-spacing:.6px;font-size:10px;color:#90accb}
+  .banner .rp b{color:#fff;font-weight:650;font-size:13px}
+  .kpiband{background:#15263a;border-radius:14px;margin-top:14px;display:grid;grid-template-columns:repeat(6,1fr);box-shadow:var(--shadow);overflow:hidden}
+  .kpiband .t{padding:16px 18px;border-right:1px solid #233650}
+  .kpiband .t:last-child{border-right:none}
+  .kpiband .t .v{font-size:24px;font-weight:780;letter-spacing:-.5px;color:#fff}
+  .kpiband .t .v.acc{color:#ff8a5c}.kpiband .t .v.b{color:#5aa2e0}.kpiband .t .v.g{color:#4fc07f}
+  .kpiband .t .l{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#8aa0b8;margin-top:5px;font-weight:600}
+  .kpiband .t .s{font-size:10.5px;color:#5f748d;margin-top:3px}
+  .sec{display:flex;align-items:center;gap:9px;margin:30px 0 13px}
+  .sec .bul{width:9px;height:9px;border-radius:2px;background:var(--navy)}
+  .sec h2{font-size:12.5px;letter-spacing:.7px;text-transform:uppercase;color:var(--ink2);font-weight:750}
+  .sec .view{margin-left:auto;font-size:11px;color:var(--faint);border:1px solid var(--line);border-radius:7px;padding:3px 10px;background:#fff}
+  .grid{display:grid;gap:14px}.c3{grid-template-columns:repeat(3,1fr)}.split{grid-template-columns:1.25fr .75fr}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:18px;box-shadow:var(--shadow)}
+  .ctitle{font-size:12px;font-weight:700;color:var(--ink2);margin-bottom:14px}
+  .ov .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.4px;font-weight:600}
+  .ov .v{font-size:27px;font-weight:760;letter-spacing:-.6px;margin-top:6px}.ov .v.acc{color:var(--brand)}
+  .ov .s{font-size:11px;color:var(--faint);margin-top:5px}
+  .ov .win{display:flex;margin-top:14px;border-top:1px solid var(--line2);padding-top:12px}
+  .win .w{flex:1;text-align:center;border-right:1px solid var(--line2)}.win .w:last-child{border-right:none}
+  .win .w .wl{font-size:9.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.4px}
+  .win .w .wv{font-size:16px;font-weight:700;margin-top:3px;color:var(--ink2)}
+  .chartbox{position:relative;height:230px}.donutbox{position:relative;height:175px}
+  .legend{display:flex;flex-direction:column;gap:7px;margin-top:14px}
+  .lg{display:flex;align-items:center;justify-content:space-between;padding:8px 11px;background:var(--bg);border-radius:8px}
+  .lg .dot{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:9px}
+  .lg .nm{font-size:12.5px;color:var(--ink2);font-weight:500}.lg .vl{font-weight:700;color:var(--ink)}.lg .pct{color:var(--mut);font-size:11.5px;margin-left:5px}
+  .tablecard{background:var(--card);border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow);overflow:hidden}
+  .toolbar{display:flex;gap:7px;flex-wrap:wrap;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line2)}
+  .toolbar .f{background:#fff;border:1px solid var(--line);color:var(--ink2);border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;font-weight:500}
+  .toolbar .f.active{background:var(--navy);border-color:var(--navy);color:#fff}.toolbar .sp{flex:1}
+  .toolbar input{background:#fff;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:7px 12px;font-size:12px;min-width:190px;outline:none}
+  table{width:100%;border-collapse:collapse}
+  th{text-align:left;font-size:10.5px;letter-spacing:.4px;text-transform:uppercase;color:var(--mut);padding:11px 16px;background:#f7f9fb;border-bottom:1px solid var(--line);font-weight:700}
+  td{padding:12px 16px;border-bottom:1px solid var(--line2);font-size:12.5px;color:var(--ink2)}
+  tbody tr:last-child td{border-bottom:none}tbody tr:hover{background:#f9fbfc}
+  .pill{display:inline-block;font-size:10.5px;font-weight:600;padding:3px 10px;border-radius:999px;white-space:nowrap}
+  .p-paid{background:#eaf2fa;color:var(--paid)}.p-org{background:#e8f5ee;color:var(--organic)}
+  .name{font-weight:600;color:var(--ink)}.src{font-size:11px;color:var(--faint)}
+  a.replay{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:var(--paid);background:#eaf2fa;border:1px solid #d6e6f4;border-radius:7px;padding:4px 10px}
+  a.replay:hover{background:var(--paid);color:#fff}
+  footer{margin-top:26px;color:var(--mut);font-size:11px;line-height:1.7;border-top:1px solid var(--line);padding-top:16px}
+  @media(max-width:900px){.kpiband{grid-template-columns:repeat(3,1fr)}.c3,.split{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="banner">
+    <div>
+      <h1>Buckshot — Leads Dashboard</h1>
+      <div class="sub">buckshotexteriors.com · Form leads by channel · catches paid leads before Google Ads' conversion lag</div>
+    </div>
+    <div class="rp"><div class="lab">Reporting period</div><b id="period">—</b><br><span style="font-size:10.5px">Snapshot <span id="asof">—</span></span></div>
+  </div>
+  <div class="kpiband" id="band"></div>
+
+  <div class="sec"><span class="bul"></span><h2>Leads &amp; Cost per Paid Lead</h2><span class="view">7 / 30 / 90 days</span></div>
+  <div class="grid c3">
+    <div class="card ov"><div class="l">Total Leads</div><div class="v" id="t30">—</div><div class="s">Form leads · last 30 days</div>
+      <div class="win"><div class="w"><div class="wl">7d</div><div class="wv" id="t7">—</div></div><div class="w"><div class="wl">30d</div><div class="wv" id="t30b">—</div></div><div class="w"><div class="wl">90d</div><div class="wv" id="t90">—</div></div></div></div>
+    <div class="card ov"><div class="l">Cost / Paid Lead</div><div class="v acc" id="c30">—</div><div class="s">Ads spend ÷ paid leads · 30 days</div>
+      <div class="win"><div class="w"><div class="wl">7d</div><div class="wv" id="c7">—</div></div><div class="w"><div class="wl">30d</div><div class="wv" id="c30b">—</div></div><div class="w"><div class="wl">90d</div><div class="wv" id="c90">—</div></div></div></div>
+    <div class="card ov"><div class="l">Google Ads Spend</div><div class="v" id="s30">—</div><div class="s">Exactly as in Google Ads · 30 days</div>
+      <div class="win"><div class="w"><div class="wl">7d</div><div class="wv" id="s7">—</div></div><div class="w"><div class="wl">30d</div><div class="wv" id="s30b">—</div></div><div class="w"><div class="wl">90d</div><div class="wv" id="s90">—</div></div></div></div>
+  </div>
+
+  <div class="sec"><span class="bul" style="background:var(--paid)"></span><h2>Paid vs Organic · last 30 days</h2></div>
+  <div class="grid split">
+    <div class="card"><div class="ctitle">Leads per day</div><div class="chartbox"><canvas id="chBar"></canvas></div></div>
+    <div class="card"><div class="ctitle">Channel mix</div><div class="donutbox"><canvas id="chDonut"></canvas></div><div class="legend" id="legend"></div></div>
+  </div>
+
+  <div class="sec"><span class="bul" style="background:var(--brand)"></span><h2>All Leads</h2><span class="view" id="leadcount">—</span></div>
+  <div class="tablecard">
+    <div class="toolbar" id="filters">
+      <button class="f active" data-f="all">All</button>
+      <button class="f" data-f="paid">Paid</button>
+      <button class="f" data-f="organic">Organic</button>
+      <span class="sp"></span><input id="search" placeholder="Search name or service…">
+    </div>
+    <table><thead><tr><th>Date</th><th>Contact</th><th>Channel</th><th>Service</th><th>Session</th></tr></thead><tbody id="rows"></tbody></table>
+  </div>
+
+  <footer>
+    Channel: <b>Paid</b> = ad click (gclid / utm cpc) · <b>Organic</b> = everything else (search, sign, referral, direct). CPL = Ads spend ÷ paid leads only — organic/direct leads cost no ad spend.
+    Ads spend &amp; conversions: Google Ads (exact). Leads: Flamingo. Test/B2B-solicitation submissions excluded. Session recordings: PostHog.
+  </footer>
+</div>
+
+<script>
+const ADS = { asof:"2026-06-24", spend:{d7:1543.22,d30:5338.78,d90:9014.16}, conv:{d7:1,d30:5,d90:8} };
+/* channel: 'paid' (gclid/cpc) or 'organic'. replay = PostHog session id (to be matched by email). */
+const PHBASE="https://us.posthog.com/project/435721/replay/";
+const LEADS = [
+ {d:"2026-06-23",n:"Sue Moe",ch:"paid",sv:"Roofing (leak)",rp:null},
+ {d:"2026-06-22",n:"Brian L Sarenpa",ch:"paid",sv:"Roofing (hail)",rp:null},
+ {d:"2026-06-18",n:"Brandon Loye",ch:"organic",sv:"Windows / Roofing",rp:null},
+ {d:"2026-06-14",n:"Santipap May",ch:"organic",sv:"Roofing (hail)",rp:null},
+ {d:"2026-06-12",n:"Jason Lukeson",ch:"organic",sv:"Remodel",rp:null},
+ {d:"2026-06-09",n:"Megan LaRocque",ch:"paid",sv:"Roofing",rp:null},
+ {d:"2026-06-09",n:"Amy Kenny",ch:"organic",sv:"Roofing",rp:null},
+ {d:"2026-06-08",n:"Downspout repair",ch:"organic",sv:"Gutters",rp:null},
+ {d:"2026-06-07",n:"Darlene Harper",ch:"paid",sv:"Roofing",rp:null},
+ {d:"2026-06-05",n:"Scott Usher",ch:"organic",sv:"Roofing (service)",rp:null},
+ {d:"2026-06-03",n:"Emily Slatter",ch:"organic",sv:"Roofing / Siding",rp:null},
+ {d:"2026-05-26",n:"Ron Wanless",ch:"organic",sv:"Roofing",rp:null},
+ {d:"2026-05-21",n:"Aaron Pruefert",ch:"organic",sv:"Siding (commercial)",rp:null},
+ {d:"2026-05-21",n:"Dan Brennan",ch:"organic",sv:"Roofing",rp:null},
+ {d:"2026-05-20",n:"Steven Moser",ch:"organic",sv:"Roofing",rp:null},
+ {d:"2026-05-19",n:"Lisa Lutz",ch:"organic",sv:"Roofing / Gutters",rp:null},
+ {d:"2026-05-19",n:"Daniel Winstanley",ch:"organic",sv:"Appointment",rp:null},
+ {d:"2026-05-19",n:"Vaughn Porter",ch:"organic",sv:"Roofing / Siding / Gutters",rp:null},
+ {d:"2026-05-17",n:"Dennis Dominguez",ch:"organic",sv:"Remodel",rp:null},
+ {d:"2026-05-08",n:"Nicole Punzel",ch:"organic",sv:"Roofing (hail)",rp:null},
+ {d:"2026-05-04",n:"Olivia Swodzinski",ch:"organic",sv:"Roofing / Siding (hail)",rp:null},
+ {d:"2026-05-04",n:"Jean Sutton",ch:"organic",sv:"Roofing (hail)",rp:null},
+ {d:"2026-05-03",n:"Susan Donahoe",ch:"organic",sv:"Siding",rp:null},
+ {d:"2026-04-30",n:"Terry Richardt",ch:"organic",sv:"Roofing",rp:null},
+ {d:"2026-04-30",n:"Angela Flora",ch:"organic",sv:"Renovation",rp:null},
+ {d:"2026-04-30",n:"Erik Linklater",ch:"paid",sv:"Roofing (chimney)",rp:null},
+ {d:"2026-04-30",n:"Susan Donahoe",ch:"organic",sv:"Siding",rp:null},
+ {d:"2026-04-29",n:"Margaret Greco",ch:"organic",sv:"Roofing",rp:null},
+ {d:"2026-04-28",n:"Penny Tahtinen",ch:"organic",sv:"Roofing (hail)",rp:null},
+ {d:"2026-04-28",n:"Jonathan Mosterd",ch:"organic",sv:"Roofing (hail)",rp:null},
+ {d:"2026-04-27",n:"Maria D Riordan",ch:"organic",sv:"Roofing / Siding",rp:null},
+ {d:"2026-04-24",n:"Michael J Wilson",ch:"organic",sv:"Siding",rp:null},
+ {d:"2026-04-23",n:"Takushi Kohmoto",ch:"organic",sv:"Roofing / Siding (hail)",rp:null},
+ {d:"2026-04-23",n:"Benjamin Nichols",ch:"organic",sv:"Remodel",rp:null},
+ {d:"2026-04-23",n:"Cameron Seiser",ch:"organic",sv:"Siding / exterior",rp:null},
+ {d:"2026-04-21",n:"Brendan Weldon",ch:"organic",sv:"Roofing",rp:null},
+ {d:"2026-04-21",n:"Joseph Valentine",ch:"organic",sv:"Roofing (storm)",rp:null},
+ {d:"2026-04-19",n:"Joe Kennedy",ch:"organic",sv:"Roofing",rp:null},
+ {d:"2026-04-18",n:"Robert Anast",ch:"organic",sv:"Roofing / Siding (hail)",rp:null},
+ {d:"2026-04-17",n:"Brenten Witt",ch:"organic",sv:"Roofing / Siding (hail)",rp:null},
+ {d:"2026-04-16",n:"Kevin Haldeman",ch:"organic",sv:"Roofing (hail)",rp:null},
+ {d:"2026-04-13",n:"Judy Krivak",ch:"organic",sv:"Warranty",rp:null},
+ {d:"2026-04-12",n:"Ken",ch:"organic",sv:"Roofing",rp:null},
+ {d:"2026-04-09",n:"Yiwu Yu",ch:"organic",sv:"Roofing",rp:null},
+ {d:"2026-04-02",n:"Tim Stahl",ch:"organic",sv:"Roofing (hail)",rp:null},
+ {d:"2026-03-30",n:"Louis Cervantes",ch:"organic",sv:"Siding",rp:null},
+ {d:"2026-03-29",n:"Paul Mason",ch:"organic",sv:"Roofing",rp:null}
+];
+
+const TODAY=new Date(ADS.asof+"T00:00:00");
+const days=d=>Math.round((TODAY-new Date(d+"T00:00:00"))/864e5);
+const usd=n=>"$"+Math.round(n).toLocaleString();
+const inW=w=>LEADS.filter(l=>days(l.d)<w);
+const paidIn=w=>inW(w).filter(l=>l.ch==="paid").length;
+const cpl=w=>{const p=paidIn(w);return p?ADS.spend["d"+w]/p:0;};
+const CH={paid:{nm:"Paid (Ads)",c:"#2f6fb0",cls:"p-paid"},organic:{nm:"Organic",c:"#2f9e6b",cls:"p-org"}};
+
+const start=new Date(TODAY);start.setDate(start.getDate()-89);
+const fmt=d=>d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
+period.textContent=fmt(start)+" – "+fmt(TODAY); asof.textContent=ADS.asof;
+
+const t7=inW(7).length,t30=inW(30).length,t90=inW(90).length;
+band.innerHTML=[
+ {v:t30,l:"Total Leads",s:"30 days"},
+ {v:paidIn(30),l:"Paid Leads",s:"30 days",cls:"b"},
+ {v:inW(30).filter(l=>l.ch==="organic").length,l:"Organic Leads",s:"30 days",cls:"g"},
+ {v:usd(ADS.spend.d30),l:"Ads Spend",s:"30 days"},
+ {v:usd(cpl(30)),l:"Cost / Paid Lead",s:"30 days",cls:"acc"},
+ {v:ADS.conv.d30,l:"Ads Conversions",s:"counted in Ads"}
+].map(t=>`<div class="t"><div class="v ${t.cls||''}">${t.v}</div><div class="l">${t.l}</div><div class="s">${t.s}</div></div>`).join("");
+
+const set=(id,v)=>document.getElementById(id).textContent=v;
+set("t30",t30);set("t7",t7);set("t30b",t30);set("t90",t90);
+set("c30",usd(cpl(30)));set("c7",usd(cpl(7)));set("c30b",usd(cpl(30)));set("c90",usd(cpl(90)));
+set("s30",usd(ADS.spend.d30));set("s7",usd(ADS.spend.d7));set("s30b",usd(ADS.spend.d30));set("s90",usd(ADS.spend.d90));
+
+const split={paid:paidIn(30),organic:inW(30).filter(l=>l.ch==="organic").length};
+const tot=split.paid+split.organic||1;
+new Chart(chDonut,{type:"doughnut",data:{labels:["Paid","Organic"],datasets:[{data:[split.paid,split.organic],backgroundColor:[CH.paid.c,CH.organic.c],borderColor:"#fff",borderWidth:3}]},options:{cutout:"66%",plugins:{legend:{display:false}}}});
+legend.innerHTML=["paid","organic"].map(k=>{const v=split[k],p=Math.round(v/tot*100);return `<div class="lg"><span class="nm"><span class="dot" style="background:${CH[k].c}"></span>${CH[k].nm}</span><span><span class="vl">${v}</span><span class="pct">${p}%</span></span></div>`;}).join("");
+
+const labels=[],bp=[],bo=[];
+for(let i=29;i>=0;i--){const dt=new Date(TODAY);dt.setDate(dt.getDate()-i);const iso=dt.toISOString().slice(0,10);labels.push(dt.toLocaleDateString("en-US",{month:"short",day:"numeric"}));bp.push(LEADS.filter(l=>l.d===iso&&l.ch==="paid").length);bo.push(LEADS.filter(l=>l.d===iso&&l.ch==="organic").length);}
+new Chart(chBar,{type:"bar",data:{labels,datasets:[{label:"Paid",data:bp,backgroundColor:CH.paid.c,stack:"s",borderRadius:3,maxBarThickness:16},{label:"Organic",data:bo,backgroundColor:CH.organic.c,stack:"s",borderRadius:3,maxBarThickness:16}]},options:{plugins:{legend:{labels:{color:"#6f7d8c",boxWidth:11,font:{size:11}}}},scales:{x:{stacked:true,grid:{display:false},ticks:{color:"#9aa6b3",maxRotation:0,autoSkip:true,maxTicksLimit:8,font:{size:10}}},y:{stacked:true,grid:{color:"#eef1f5"},border:{display:false},ticks:{color:"#9aa6b3",precision:0,font:{size:10}}}}}});
+
+let af="all",q="";
+function passes(l){if(q&&!(l.n.toLowerCase().includes(q)||l.sv.toLowerCase().includes(q)))return false;if(af==="paid")return l.ch==="paid";if(af==="organic")return l.ch==="organic";return true;}
+function render(){const list=LEADS.filter(passes).sort((a,b)=>b.d.localeCompare(a.d));leadcount.textContent=list.length+" of "+LEADS.length;
+ rows.innerHTML=list.map(l=>`<tr><td>${l.d}</td><td class="name">${l.n}</td><td><span class="pill ${CH[l.ch].cls}">${CH[l.ch].nm}</span></td><td>${l.sv}</td><td>${l.rp?`<a class="replay" href="${PHBASE}${l.rp}" target="_blank" rel="noopener">▶ Watch</a>`:'<span class="src">—</span>'}</td></tr>`).join("")||'<tr><td colspan="5" class="src" style="text-align:center;padding:26px">No leads.</td></tr>';}
+filters.addEventListener("click",e=>{if(!e.target.dataset.f)return;document.querySelectorAll(".f").forEach(b=>b.classList.remove("active"));e.target.classList.add("active");af=e.target.dataset.f;render();});
+search.addEventListener("input",e=>{q=e.target.value.toLowerCase().trim();render();});
+render();
+</script>
+</body>
+</html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
