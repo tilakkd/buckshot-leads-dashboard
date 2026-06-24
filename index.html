@@ -10,7 +10,7 @@
   :root{
     --bg:#eef1f5; --card:#fff; --line:#e4e9f0; --line2:#eef1f5;
     --ink:#16202b; --ink2:#36465a; --mut:#6f7d8c; --faint:#9aa6b3;
-    --navy:#1f3a5f; --brand:#c8472b; --accent:#2f6fb0;
+    --navy:#1f3a5f; --brand:#c8472b; --paid:#2f6fb0; --organic:#2f9e6b;
     --shadow:0 1px 2px rgba(16,32,48,.04),0 2px 10px rgba(16,32,48,.05);
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -22,16 +22,15 @@
   .banner .rp{text-align:right;font-size:11.5px;color:#bcd0e6}
   .banner .rp .lab{text-transform:uppercase;letter-spacing:.6px;font-size:10px;color:#90accb}
   .banner .rp b{color:#fff;font-weight:650;font-size:13px}
-  /* global period control */
-  .control{display:flex;align-items:center;gap:10px;margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;box-shadow:var(--shadow)}
-  .control .lab{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut);font-weight:700}
-  .control select{background:#fff;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:8px 13px;font-size:13px;font-weight:600;outline:none;cursor:pointer}
-  .control .hint{margin-left:auto;font-size:11px;color:var(--faint)}
-  .kpiband{background:#15263a;border-radius:14px;display:grid;grid-template-columns:repeat(2,1fr);box-shadow:var(--shadow);overflow:hidden;margin-top:14px}
-  .kpiband .t{padding:18px 22px;border-right:1px solid #233650}
+  .ctrl{display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+  .ctrl label{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut);font-weight:700}
+  .ctrl select{background:#fff;border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:9px 14px;font-size:13px;font-weight:600;outline:none;cursor:pointer;box-shadow:var(--shadow)}
+  .kpiband{background:#15263a;border-radius:14px;display:grid;grid-template-columns:repeat(4,1fr);box-shadow:var(--shadow);overflow:hidden;margin-top:12px}
+  .kpiband .t{padding:18px 20px;border-right:1px solid #233650}
   .kpiband .t:last-child{border-right:none}
-  .kpiband .t .v{font-size:30px;font-weight:780;letter-spacing:-.6px;color:#fff}
-  .kpiband .t .l{font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:#8aa0b8;margin-top:5px;font-weight:600}
+  .kpiband .t .v{font-size:27px;font-weight:780;letter-spacing:-.5px;color:#fff}
+  .kpiband .t .v.b{color:#5aa2e0}.kpiband .t .v.g{color:#4fc07f}
+  .kpiband .t .l{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#8aa0b8;margin-top:5px;font-weight:600}
   .kpiband .t .s{font-size:10.5px;color:#5f748d;margin-top:3px}
   .sec{display:flex;align-items:center;gap:9px;margin:30px 0 13px}
   .sec .bul{width:9px;height:9px;border-radius:2px;background:var(--navy)}
@@ -42,24 +41,22 @@
   .tablecard{background:var(--card);border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow);overflow:hidden}
   .toolbar{display:flex;gap:7px;flex-wrap:wrap;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line2)}
   .toolbar .sp{flex:1}
-  .toolbar input{background:#fff;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:7px 12px;font-size:12px;min-width:200px;outline:none}
+  .toolbar input{background:#fff;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:7px 12px;font-size:12px;min-width:190px;outline:none}
   .tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
   table{width:100%;border-collapse:collapse;min-width:480px}
   th{text-align:left;font-size:10.5px;letter-spacing:.4px;text-transform:uppercase;color:var(--mut);padding:11px 16px;background:#f7f9fb;border-bottom:1px solid var(--line);font-weight:700}
   td{padding:12px 16px;border-bottom:1px solid var(--line2);font-size:12.5px;color:var(--ink2)}
   tbody tr:last-child td{border-bottom:none}tbody tr:hover{background:#f9fbfc}
-  .name{font-weight:600;color:var(--ink)}.src{font-size:11px;color:var(--faint)}
   .pill{display:inline-block;font-size:10.5px;font-weight:600;padding:3px 10px;border-radius:999px;white-space:nowrap}
-  .p-paid{background:#eaf2fa;color:#2f6fb0}.p-org{background:#e8f5ee;color:#2f9e6b}
+  .p-paid{background:#eaf2fa;color:var(--paid)}.p-org{background:#e8f5ee;color:var(--organic)}
+  .name{font-weight:600;color:var(--ink)}.src{font-size:11px;color:var(--faint)}
   footer{margin-top:26px;color:var(--mut);font-size:11px;line-height:1.7;border-top:1px solid var(--line);padding-top:16px}
+  @media(max-width:900px){.kpiband{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:600px){
-    .wrap{padding:14px 12px 48px}
-    .banner{padding:16px 18px;border-radius:12px}.banner h1{font-size:18px}.banner .sub{font-size:11px}.banner .rp{text-align:left}
-    .kpiband .t .v{font-size:25px}.kpiband .t{padding:14px 16px}
-    .control{flex-wrap:wrap}.control .hint{margin-left:0;width:100%}
-    .sec{margin:22px 0 11px}.card{padding:15px}
-    .toolbar{padding:12px}.toolbar input{flex:1;min-width:0}
-    .chartbox{height:200px}th,td{padding:10px 12px}
+    .wrap{padding:14px 12px 48px}.banner{padding:16px 18px;border-radius:12px}.banner h1{font-size:18px}.banner .sub{font-size:11px}.banner .rp{text-align:left}
+    .kpiband{grid-template-columns:repeat(2,1fr)}.kpiband .t{padding:14px 16px;border-bottom:1px solid #233650}.kpiband .t .v{font-size:22px}
+    .kpiband .t:nth-child(2n){border-right:none}.kpiband .t:nth-last-child(-n+2){border-bottom:none}
+    .sec{margin:22px 0 11px}.card{padding:15px}.toolbar{padding:12px}.toolbar input{flex:1;min-width:0}.chartbox{height:200px}th,td{padding:10px 12px}
   }
 </style>
 </head>
@@ -70,145 +67,112 @@
       <h1>Buckshot — Leads Dashboard</h1>
       <div class="sub">buckshotexteriors.com · Overall website leads into Buckshot</div>
     </div>
-    <div class="rp"><div class="lab">Snapshot</div><b id="asof">—</b></div>
+    <div class="rp"><div class="lab">Showing</div><b id="period">—</b><br><span style="font-size:10.5px">Snapshot <span id="asof">—</span></span></div>
   </div>
 
-  <!-- ===== GLOBAL PERIOD CONTROL ===== -->
-  <div class="control">
-    <span class="lab">Period</span>
-    <select id="month"><option value="all">All months (Mar–Jun 2026)</option></select>
-    <span class="hint" id="rangehint">—</span>
-  </div>
+  <!-- ===== GLOBAL MONTH FILTER (drives everything) ===== -->
+  <div class="ctrl"><label for="month">Period</label><select id="month"><option value="all">All months</option></select></div>
 
-  <!-- ===== KPI BAND (period-scoped) ===== -->
+  <!-- ===== KPI BAND ===== -->
   <div class="kpiband" id="band"></div>
+
+  <!-- ===== LEADS PER DAY ===== -->
+  <div class="sec"><span class="bul" style="background:var(--paid)"></span><h2 id="chTitle">Leads per day</h2></div>
+  <div class="card"><div class="chartbox"><canvas id="chBar"></canvas></div></div>
 
   <!-- ===== LEADS TABLE ===== -->
   <div class="sec"><span class="bul" style="background:var(--brand)"></span><h2>All Leads</h2><span class="view" id="leadcount">—</span></div>
   <div class="tablecard">
-    <div class="toolbar"><input id="search" placeholder="Search name or service…"></div>
+    <div class="toolbar"><span class="sp"></span><input id="search" placeholder="Search name or service…"></div>
     <div class="tscroll"><table><thead><tr><th>Date</th><th>Contact</th><th>Channel</th><th>Service</th></tr></thead><tbody id="rows"></tbody></table></div>
   </div>
 
-  <!-- ===== LEADS PER DAY ===== -->
-  <div class="sec"><span class="bul" style="background:var(--accent)"></span><h2>Leads per day</h2><span class="view" id="chartscope">—</span></div>
-  <div class="card"><div class="chartbox"><canvas id="chBar"></canvas></div></div>
-
   <footer>
-    Leads = genuine website form submissions (Flamingo); test &amp; B2B-solicitation submissions excluded. Ads spend: Google Ads (exact, account-level). Channel: <b>Paid</b> = ad click (gclid / utm cpc) · <b>Organic</b> = everything else.
+    Period filter applies to the whole dashboard. Channel: <b>Paid</b> = ad click (gclid / utm cpc) · <b>Organic</b> = everything else. Leads = genuine website form submissions (Flamingo); test &amp; B2B-solicitation excluded. Ads spend: Google Ads account total (exact).
   </footer>
 </div>
 
 <script>
 const ASOF="2026-06-24";
-/* exact account-level Ads spend per month (verified == 90d total $9,106.01) */
-const MONTHLY_SPEND={"2026-03":257.72,"2026-04":3233.54,"2026-05":923.06,"2026-06":4691.69};
+const WIN={from:"2026-03-27",to:"2026-06-24"};
+const SPEND={"2026-06":4691.69,"2026-05":923.06,"2026-04":3233.54,"2026-03":257.72};
 const ALL_SPEND=9106.01;
 const PAID=new Set(["Sue Moe","Brian L Sarenpa","Megan LaRocque","Darlene Harper","Erik Linklater"]);
 const LEADS=[
- {d:"2026-06-23",n:"Sue Moe",sv:"Roofing (leak)"},
- {d:"2026-06-22",n:"Brian L Sarenpa",sv:"Roofing (hail)"},
- {d:"2026-06-18",n:"Brandon Loye",sv:"Windows / Roofing"},
- {d:"2026-06-14",n:"Santipap May",sv:"Roofing (hail)"},
- {d:"2026-06-12",n:"Jason Lukeson",sv:"Remodel"},
- {d:"2026-06-09",n:"Megan LaRocque",sv:"Roofing"},
- {d:"2026-06-09",n:"Amy Kenny",sv:"Roofing"},
- {d:"2026-06-08",n:"Downspout repair",sv:"Gutters"},
- {d:"2026-06-07",n:"Darlene Harper",sv:"Roofing"},
- {d:"2026-06-05",n:"Scott Usher",sv:"Roofing (service)"},
- {d:"2026-06-03",n:"Emily Slatter",sv:"Roofing / Siding"},
- {d:"2026-05-26",n:"Ron Wanless",sv:"Roofing"},
- {d:"2026-05-21",n:"Aaron Pruefert",sv:"Siding (commercial)"},
- {d:"2026-05-21",n:"Dan Brennan",sv:"Roofing"},
- {d:"2026-05-20",n:"Steven Moser",sv:"Roofing"},
- {d:"2026-05-19",n:"Lisa Lutz",sv:"Roofing / Gutters"},
- {d:"2026-05-19",n:"Daniel Winstanley",sv:"Appointment"},
- {d:"2026-05-19",n:"Vaughn Porter",sv:"Roofing / Siding / Gutters"},
- {d:"2026-05-17",n:"Dennis Dominguez",sv:"Remodel"},
- {d:"2026-05-08",n:"Nicole Punzel",sv:"Roofing (hail)"},
- {d:"2026-05-04",n:"Olivia Swodzinski",sv:"Roofing / Siding (hail)"},
- {d:"2026-05-04",n:"Jean Sutton",sv:"Roofing (hail)"},
- {d:"2026-05-03",n:"Susan Donahoe",sv:"Siding"},
- {d:"2026-04-30",n:"Terry Richardt",sv:"Roofing"},
- {d:"2026-04-30",n:"Angela Flora",sv:"Renovation"},
- {d:"2026-04-30",n:"Erik Linklater",sv:"Roofing (chimney)"},
- {d:"2026-04-30",n:"Susan Donahoe",sv:"Siding"},
- {d:"2026-04-29",n:"Margaret Greco",sv:"Roofing"},
- {d:"2026-04-28",n:"Penny Tahtinen",sv:"Roofing (hail)"},
- {d:"2026-04-28",n:"Jonathan Mosterd",sv:"Roofing (hail)"},
- {d:"2026-04-27",n:"Maria D Riordan",sv:"Roofing / Siding"},
- {d:"2026-04-24",n:"Michael J Wilson",sv:"Siding"},
- {d:"2026-04-23",n:"Takushi Kohmoto",sv:"Roofing / Siding (hail)"},
- {d:"2026-04-23",n:"Benjamin Nichols",sv:"Remodel"},
- {d:"2026-04-23",n:"Cameron Seiser",sv:"Siding / exterior"},
- {d:"2026-04-21",n:"Brendan Weldon",sv:"Roofing"},
- {d:"2026-04-21",n:"Joseph Valentine",sv:"Roofing (storm)"},
- {d:"2026-04-19",n:"Joe Kennedy",sv:"Roofing"},
- {d:"2026-04-18",n:"Robert Anast",sv:"Roofing / Siding (hail)"},
- {d:"2026-04-17",n:"Brenten Witt",sv:"Roofing / Siding (hail)"},
- {d:"2026-04-16",n:"Kevin Haldeman",sv:"Roofing (hail)"},
- {d:"2026-04-13",n:"Judy Krivak",sv:"Warranty"},
- {d:"2026-04-12",n:"Ken",sv:"Roofing"},
- {d:"2026-04-09",n:"Yiwu Yu",sv:"Roofing"},
- {d:"2026-04-02",n:"Tim Stahl",sv:"Roofing (hail)"},
- {d:"2026-03-30",n:"Louis Cervantes",sv:"Siding"},
+ {d:"2026-06-23",n:"Sue Moe",sv:"Roofing (leak)"},{d:"2026-06-22",n:"Brian L Sarenpa",sv:"Roofing (hail)"},
+ {d:"2026-06-18",n:"Brandon Loye",sv:"Windows / Roofing"},{d:"2026-06-14",n:"Santipap May",sv:"Roofing (hail)"},
+ {d:"2026-06-12",n:"Jason Lukeson",sv:"Remodel"},{d:"2026-06-09",n:"Megan LaRocque",sv:"Roofing"},
+ {d:"2026-06-09",n:"Amy Kenny",sv:"Roofing"},{d:"2026-06-08",n:"Downspout repair",sv:"Gutters"},
+ {d:"2026-06-07",n:"Darlene Harper",sv:"Roofing"},{d:"2026-06-05",n:"Scott Usher",sv:"Roofing (service)"},
+ {d:"2026-06-03",n:"Emily Slatter",sv:"Roofing / Siding"},{d:"2026-05-26",n:"Ron Wanless",sv:"Roofing"},
+ {d:"2026-05-21",n:"Aaron Pruefert",sv:"Siding (commercial)"},{d:"2026-05-21",n:"Dan Brennan",sv:"Roofing"},
+ {d:"2026-05-20",n:"Steven Moser",sv:"Roofing"},{d:"2026-05-19",n:"Lisa Lutz",sv:"Roofing / Gutters"},
+ {d:"2026-05-19",n:"Daniel Winstanley",sv:"Appointment"},{d:"2026-05-19",n:"Vaughn Porter",sv:"Roofing / Siding / Gutters"},
+ {d:"2026-05-17",n:"Dennis Dominguez",sv:"Remodel"},{d:"2026-05-08",n:"Nicole Punzel",sv:"Roofing (hail)"},
+ {d:"2026-05-04",n:"Olivia Swodzinski",sv:"Roofing / Siding (hail)"},{d:"2026-05-04",n:"Jean Sutton",sv:"Roofing (hail)"},
+ {d:"2026-05-03",n:"Susan Donahoe",sv:"Siding"},{d:"2026-04-30",n:"Terry Richardt",sv:"Roofing"},
+ {d:"2026-04-30",n:"Angela Flora",sv:"Renovation"},{d:"2026-04-30",n:"Erik Linklater",sv:"Roofing (chimney)"},
+ {d:"2026-04-30",n:"Susan Donahoe",sv:"Siding"},{d:"2026-04-29",n:"Margaret Greco",sv:"Roofing"},
+ {d:"2026-04-28",n:"Penny Tahtinen",sv:"Roofing (hail)"},{d:"2026-04-28",n:"Jonathan Mosterd",sv:"Roofing (hail)"},
+ {d:"2026-04-27",n:"Maria D Riordan",sv:"Roofing / Siding"},{d:"2026-04-24",n:"Michael J Wilson",sv:"Siding"},
+ {d:"2026-04-23",n:"Takushi Kohmoto",sv:"Roofing / Siding (hail)"},{d:"2026-04-23",n:"Benjamin Nichols",sv:"Remodel"},
+ {d:"2026-04-23",n:"Cameron Seiser",sv:"Siding / exterior"},{d:"2026-04-21",n:"Brendan Weldon",sv:"Roofing"},
+ {d:"2026-04-21",n:"Joseph Valentine",sv:"Roofing (storm)"},{d:"2026-04-19",n:"Joe Kennedy",sv:"Roofing"},
+ {d:"2026-04-18",n:"Robert Anast",sv:"Roofing / Siding (hail)"},{d:"2026-04-17",n:"Brenten Witt",sv:"Roofing / Siding (hail)"},
+ {d:"2026-04-16",n:"Kevin Haldeman",sv:"Roofing (hail)"},{d:"2026-04-13",n:"Judy Krivak",sv:"Warranty"},
+ {d:"2026-04-12",n:"Ken",sv:"Roofing"},{d:"2026-04-09",n:"Yiwu Yu",sv:"Roofing"},
+ {d:"2026-04-02",n:"Tim Stahl",sv:"Roofing (hail)"},{d:"2026-03-30",n:"Louis Cervantes",sv:"Siding"},
  {d:"2026-03-29",n:"Paul Mason",sv:"Roofing"}
 ];
 
 const usd=n=>"$"+Math.round(n).toLocaleString();
-const chOf=l=>PAID.has(l.n)?{nm:"Paid (Ads)",cls:"p-paid"}:{nm:"Organic",cls:"p-org"};
+const isoLocal=dt=>dt.getFullYear()+"-"+String(dt.getMonth()+1).padStart(2,"0")+"-"+String(dt.getDate()).padStart(2,"0");
 const monthLbl=m=>new Date(m+"-01T00:00:00").toLocaleDateString("en-US",{month:"long",year:"numeric"});
+const dmy=iso=>new Date(iso+"T00:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
+const CH={paid:{nm:"Paid (Ads)",cls:"p-paid"},organic:{nm:"Organic",cls:"p-org"}};
+const chOf=l=>PAID.has(l.n)?"paid":"organic";
+
+let mf="all", q="", chart=null;
+
+/* month dropdown */
+const months=[...new Set(LEADS.map(l=>l.d.slice(0,7)))].sort().reverse();
+const sel=document.getElementById("month");
+sel.insertAdjacentHTML("beforeend",months.map(m=>`<option value="${m}">${monthLbl(m)}</option>`).join(""));
+if(months.length){mf=months[0];sel.value=months[0];}   // default = latest month
 document.getElementById("asof").textContent=ASOF;
 
-let mf="all",q="",chart=null;
-
-/* build month options (newest first), default latest */
-(()=>{const ms=[...new Set(LEADS.map(l=>l.d.slice(0,7)))].sort().reverse();
- const sel=document.getElementById("month");
- sel.insertAdjacentHTML("beforeend",ms.map(m=>`<option value="${m}">${monthLbl(m)}</option>`).join(""));
- if(ms.length){mf=ms[0];sel.value=ms[0];}})();
-
 function scopeLeads(){return mf==="all"?LEADS:LEADS.filter(l=>l.d.startsWith(mf));}
-function scopeSpend(){return mf==="all"?ALL_SPEND:(MONTHLY_SPEND[mf]||0);}
-function scopeRange(){ // [startISO,endISO] for the chart
-  if(mf==="all")return ["2026-03-27",ASOF];
-  const start=mf+"-01";
-  const last=new Date(new Date(mf+"-01T00:00:00").getFullYear(), new Date(mf+"-01T00:00:00").getMonth()+1, 0);
-  const lastISO=mf+"-"+String(last.getDate()).padStart(2,"0");
-  return [start, lastISO>ASOF?ASOF:lastISO];
+function spendOf(){return mf==="all"?ALL_SPEND:(SPEND[mf]||0);}
+function range(){
+  if(mf==="all") return [WIN.from,WIN.to];
+  const y=+mf.slice(0,4),mo=+mf.slice(5,7);
+  const last=mf+"-"+String(new Date(y,mo,0).getDate()).padStart(2,"0");
+  return [mf+"-01"<WIN.from?WIN.from:mf+"-01", last>WIN.to?WIN.to:last];
 }
-function scopeLabel(){return mf==="all"?"Mar 27 – Jun 24, 2026":monthLbl(mf);}
 
-function render(){
-  const sl=scopeLeads();
-  // KPI band
+function renderAll(){
+  const ls=scopeLeads();
+  const paid=ls.filter(l=>chOf(l)==="paid").length, org=ls.length-paid;
+  // period label
+  const [a,b]=range();
+  document.getElementById("period").textContent = mf==="all" ? (dmy(a)+" – "+dmy(b)) : (monthLbl(mf)+" ("+dmy(a).replace(", 2026","")+" – "+dmy(b).replace(/^\w+ /,"")+")");
+  // band
   document.getElementById("band").innerHTML=[
-    {v:sl.length,l:"Total Leads",s:scopeLabel()},
-    {v:usd(scopeSpend()),l:"Ads Spend",s:scopeLabel()}
-  ].map(t=>`<div class="t"><div class="v">${t.v}</div><div class="l">${t.l}</div><div class="s">${t.s}</div></div>`).join("");
-  document.getElementById("rangehint").textContent="Showing "+scopeLabel();
-  document.getElementById("chartscope").textContent=scopeLabel();
-  // table
-  const list=sl.filter(l=>!q||l.n.toLowerCase().includes(q)||l.sv.toLowerCase().includes(q)).sort((a,b)=>b.d.localeCompare(a.d));
-  document.getElementById("leadcount").textContent=list.length+" of "+sl.length;
-  document.getElementById("rows").innerHTML=list.map(l=>{const c=chOf(l);return `<tr><td>${l.d}</td><td class="name">${l.n}</td><td><span class="pill ${c.cls}">${c.nm}</span></td><td>${l.sv}</td></tr>`;}).join("")||'<tr><td colspan="4" class="src" style="text-align:center;padding:26px">No leads.</td></tr>';
-  // chart
-  drawChart();
-}
-
-function drawChart(){
-  const [s,e]=scopeRange();
-  const sd=new Date(s+"T00:00:00"), ed=new Date(e+"T00:00:00");
-  const labels=[],data=[];
-  const isoLocal=dt=>dt.getFullYear()+"-"+String(dt.getMonth()+1).padStart(2,"0")+"-"+String(dt.getDate()).padStart(2,"0");
-  for(let dt=new Date(sd);dt<=ed;dt.setDate(dt.getDate()+1)){const iso=isoLocal(dt);labels.push(dt.toLocaleDateString("en-US",{month:"short",day:"numeric"}));data.push(LEADS.filter(l=>l.d===iso).length);}
+    {v:ls.length,l:"Total Leads",s:"this period"},
+    {v:paid,l:"Paid Leads",s:"this period",cls:"b"},
+    {v:org,l:"Organic Leads",s:"this period",cls:"g"},
+    {v:usd(spendOf()),l:"Ads Spend",s:"this period"}
+  ].map(t=>`<div class="t"><div class="v ${t.cls||''}">${t.v}</div><div class="l">${t.l}</div><div class="s">${t.s}</div></div>`).join("");
+  // chart (daily)
+  document.getElementById("chTitle").textContent = "Leads per day · " + (mf==="all"?"Mar 27 – Jun 24":monthLbl(mf));
+  const labels=[],data=[];const cur=new Date(a+"T00:00:00"),end=new Date(b+"T00:00:00");
+  while(cur<=end){const iso=isoLocal(cur);labels.push(cur.toLocaleDateString("en-US",{month:"short",day:"numeric"}));data.push(LEADS.filter(l=>l.d===iso).length);cur.setDate(cur.getDate()+1);}
   if(chart)chart.destroy();
   chart=new Chart(document.getElementById("chBar"),{type:"bar",data:{labels,datasets:[{label:"Leads",data,backgroundColor:"#2f6fb0",borderRadius:4,maxBarThickness:18}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:"#9aa6b3",maxRotation:0,autoSkip:true,maxTicksLimit:10,font:{size:10}}},y:{grid:{color:"#eef1f5"},border:{display:false},ticks:{color:"#9aa6b3",precision:0,font:{size:10}}}}}});
+  renderTable();
 }
-
-document.getElementById("month").addEventListener("change",e=>{mf=e.target.value;render();});
-document.getElementById("search").addEventListener("input",e=>{q=e.target.value.toLowerCase().trim();render();});
-render();
-</script>
-</body>
-</html>
+function passes(l){if(q&&!(l.n.toLowerCase().includes(q)||l.sv.toLowerCase().includes(q)))return false;return true;}
+function renderTable(){
+  const list=scopeLeads().filter(passes).sort((a,b)=>b.d.localeCompare(a.d));
+  document.getElementById("leadcount").textContent=list.length+" lead"+(list.length===1?"":"s");
+  document.getElementById("rows").innerHTML=list.map(l=>{const c=CH[chOf(l)];return `<tr><td>${l.d}</td><td class="name">${l.n}</td><td><span class="
