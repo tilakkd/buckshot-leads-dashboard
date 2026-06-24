@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Buckshot — Leads Dashboard</title>
+<title>Buckshot - Leads Dashboard</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root{
@@ -64,41 +64,37 @@
 <div class="wrap">
   <div class="banner">
     <div>
-      <h1>Buckshot — Leads Dashboard</h1>
-      <div class="sub">buckshotexteriors.com · Overall website leads into Buckshot</div>
+      <h1>Buckshot - Leads Dashboard</h1>
+      <div class="sub">buckshotexteriors.com - Overall website leads into Buckshot</div>
     </div>
-    <div class="rp"><div class="lab">Showing</div><b id="period">—</b><br><span style="font-size:10.5px">Snapshot <span id="asof">—</span></span></div>
+    <div class="rp"><div class="lab">Showing</div><b id="period">-</b><br><span style="font-size:10.5px">Snapshot <span id="asof">-</span></span></div>
   </div>
 
-  <!-- ===== GLOBAL MONTH FILTER (drives everything) ===== -->
   <div class="ctrl"><label for="month">Period</label><select id="month"><option value="all">All months</option></select></div>
 
-  <!-- ===== KPI BAND ===== -->
   <div class="kpiband" id="band"></div>
 
-  <!-- ===== LEADS PER DAY ===== -->
   <div class="sec"><span class="bul" style="background:var(--paid)"></span><h2 id="chTitle">Leads per day</h2></div>
   <div class="card"><div class="chartbox"><canvas id="chBar"></canvas></div></div>
 
-  <!-- ===== LEADS TABLE ===== -->
-  <div class="sec"><span class="bul" style="background:var(--brand)"></span><h2>All Leads</h2><span class="view" id="leadcount">—</span></div>
+  <div class="sec"><span class="bul" style="background:var(--brand)"></span><h2>All Leads</h2><span class="view" id="leadcount">-</span></div>
   <div class="tablecard">
-    <div class="toolbar"><span class="sp"></span><input id="search" placeholder="Search name or service…"></div>
+    <div class="toolbar"><span class="sp"></span><input id="search" placeholder="Search name or service..."></div>
     <div class="tscroll"><table><thead><tr><th>Date</th><th>Contact</th><th>Channel</th><th>Service</th></tr></thead><tbody id="rows"></tbody></table></div>
   </div>
 
   <footer>
-    Period filter applies to the whole dashboard. Channel: <b>Paid</b> = ad click (gclid / utm cpc) · <b>Organic</b> = everything else. Leads = genuine website form submissions (Flamingo); test &amp; B2B-solicitation excluded. Ads spend: Google Ads account total (exact).
+    Period filter applies to the whole dashboard. Channel: <b>Paid</b> = ad click (gclid / utm cpc); <b>Organic</b> = everything else. Leads = genuine website form submissions (Flamingo); test and B2B-solicitation excluded. Ads spend: Google Ads account total (exact).
   </footer>
 </div>
 
 <script>
-const ASOF="2026-06-24";
-const WIN={from:"2026-03-27",to:"2026-06-24"};
-const SPEND={"2026-06":4691.69,"2026-05":923.06,"2026-04":3233.54,"2026-03":257.72};
-const ALL_SPEND=9106.01;
-const PAID=new Set(["Sue Moe","Brian L Sarenpa","Megan LaRocque","Darlene Harper","Erik Linklater"]);
-const LEADS=[
+var ASOF="2026-06-24";
+var WIN={from:"2026-03-27",to:"2026-06-24"};
+var SPEND={"2026-06":4691.69,"2026-05":923.06,"2026-04":3233.54,"2026-03":257.72};
+var ALL_SPEND=9106.01;
+var PAID=new Set(["Sue Moe","Brian L Sarenpa","Megan LaRocque","Darlene Harper","Erik Linklater"]);
+var LEADS=[
  {d:"2026-06-23",n:"Sue Moe",sv:"Roofing (leak)"},{d:"2026-06-22",n:"Brian L Sarenpa",sv:"Roofing (hail)"},
  {d:"2026-06-18",n:"Brandon Loye",sv:"Windows / Roofing"},{d:"2026-06-14",n:"Santipap May",sv:"Roofing (hail)"},
  {d:"2026-06-12",n:"Jason Lukeson",sv:"Remodel"},{d:"2026-06-09",n:"Megan LaRocque",sv:"Roofing"},
@@ -125,54 +121,79 @@ const LEADS=[
  {d:"2026-03-29",n:"Paul Mason",sv:"Roofing"}
 ];
 
-const usd=n=>"$"+Math.round(n).toLocaleString();
-const isoLocal=dt=>dt.getFullYear()+"-"+String(dt.getMonth()+1).padStart(2,"0")+"-"+String(dt.getDate()).padStart(2,"0");
-const monthLbl=m=>new Date(m+"-01T00:00:00").toLocaleDateString("en-US",{month:"long",year:"numeric"});
-const dmy=iso=>new Date(iso+"T00:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
-const CH={paid:{nm:"Paid (Ads)",cls:"p-paid"},organic:{nm:"Organic",cls:"p-org"}};
-const chOf=l=>PAID.has(l.n)?"paid":"organic";
+function usd(n){return "$"+Math.round(n).toLocaleString();}
+function isoLocal(dt){return dt.getFullYear()+"-"+String(dt.getMonth()+1).padStart(2,"0")+"-"+String(dt.getDate()).padStart(2,"0");}
+function monthLbl(m){return new Date(m+"-01T00:00:00").toLocaleDateString("en-US",{month:"long",year:"numeric"});}
+function dmy(iso){return new Date(iso+"T00:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric"});}
+var CH={paid:{nm:"Paid (Ads)",cls:"p-paid"},organic:{nm:"Organic",cls:"p-org"}};
+function chOf(l){return PAID.has(l.n)?"paid":"organic";}
 
-let mf="all", q="", chart=null;
+var mf="all", q="", chart=null;
 
-/* month dropdown */
-const months=[...new Set(LEADS.map(l=>l.d.slice(0,7)))].sort().reverse();
-const sel=document.getElementById("month");
-sel.insertAdjacentHTML("beforeend",months.map(m=>`<option value="${m}">${monthLbl(m)}</option>`).join(""));
-if(months.length){mf=months[0];sel.value=months[0];}   // default = latest month
+var months=Array.from(new Set(LEADS.map(function(l){return l.d.slice(0,7);}))).sort().reverse();
+var sel=document.getElementById("month");
+sel.insertAdjacentHTML("beforeend", months.map(function(m){return '<option value="'+m+'">'+monthLbl(m)+'</option>';}).join(""));
+if(months.length){mf=months[0];sel.value=months[0];}
 document.getElementById("asof").textContent=ASOF;
 
-function scopeLeads(){return mf==="all"?LEADS:LEADS.filter(l=>l.d.startsWith(mf));}
+function scopeLeads(){return mf==="all"?LEADS:LEADS.filter(function(l){return l.d.slice(0,7)===mf;});}
 function spendOf(){return mf==="all"?ALL_SPEND:(SPEND[mf]||0);}
 function range(){
-  if(mf==="all") return [WIN.from,WIN.to];
-  const y=+mf.slice(0,4),mo=+mf.slice(5,7);
-  const last=mf+"-"+String(new Date(y,mo,0).getDate()).padStart(2,"0");
-  return [mf+"-01"<WIN.from?WIN.from:mf+"-01", last>WIN.to?WIN.to:last];
+  if(mf==="all"){return [WIN.from,WIN.to];}
+  var y=+mf.slice(0,4), mo=+mf.slice(5,7);
+  var lastDay=new Date(y,mo,0).getDate();
+  var first=mf+"-01", last=mf+"-"+String(lastDay).padStart(2,"0");
+  return [first<WIN.from?WIN.from:first, last>WIN.to?WIN.to:last];
+}
+
+function buildChart(){
+  var r=range(), labels=[], data=[];
+  var cur=new Date(r[0]+"T00:00:00"), end=new Date(r[1]+"T00:00:00");
+  while(cur<=end){
+    var iso=isoLocal(cur);
+    labels.push(cur.toLocaleDateString("en-US",{month:"short",day:"numeric"}));
+    data.push(LEADS.filter(function(l){return l.d===iso;}).length);
+    cur.setDate(cur.getDate()+1);
+  }
+  if(chart){chart.destroy();}
+  chart=new Chart(document.getElementById("chBar"),{type:"bar",
+    data:{labels:labels,datasets:[{label:"Leads",data:data,backgroundColor:"#2f6fb0",borderRadius:4,maxBarThickness:18}]},
+    options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:"#9aa6b3",maxRotation:0,autoSkip:true,maxTicksLimit:10,font:{size:10}}},y:{grid:{color:"#eef1f5"},border:{display:false},ticks:{color:"#9aa6b3",precision:0,font:{size:10}}}}}});
+}
+
+function renderTable(){
+  var list=scopeLeads().filter(function(l){return !q||l.n.toLowerCase().includes(q)||l.sv.toLowerCase().includes(q);}).sort(function(a,b){return b.d.localeCompare(a.d);});
+  document.getElementById("leadcount").textContent=list.length+(list.length===1?" lead":" leads");
+  var html="";
+  for(var i=0;i<list.length;i++){var l=list[i], c=CH[chOf(l)];
+    html+='<tr><td>'+l.d+'</td><td class="name">'+l.n+'</td><td><span class="pill '+c.cls+'">'+c.nm+'</span></td><td>'+l.sv+'</td></tr>';}
+  document.getElementById("rows").innerHTML=html||'<tr><td colspan="4" class="src" style="text-align:center;padding:26px">No leads in this period.</td></tr>';
 }
 
 function renderAll(){
-  const ls=scopeLeads();
-  const paid=ls.filter(l=>chOf(l)==="paid").length, org=ls.length-paid;
-  // period label
-  const [a,b]=range();
-  document.getElementById("period").textContent = mf==="all" ? (dmy(a)+" – "+dmy(b)) : (monthLbl(mf)+" ("+dmy(a).replace(", 2026","")+" – "+dmy(b).replace(/^\w+ /,"")+")");
-  // band
-  document.getElementById("band").innerHTML=[
-    {v:ls.length,l:"Total Leads",s:"this period"},
+  var ls=scopeLeads();
+  var paid=ls.filter(function(l){return chOf(l)==="paid";}).length, org=ls.length-paid;
+  var r=range();
+  document.getElementById("period").textContent = mf==="all" ? (dmy(r[0])+" - "+dmy(r[1])+", 2026") : monthLbl(mf);
+  var tiles=[
+    {v:ls.length,l:"Total Leads",s:"this period",cls:""},
     {v:paid,l:"Paid Leads",s:"this period",cls:"b"},
     {v:org,l:"Organic Leads",s:"this period",cls:"g"},
-    {v:usd(spendOf()),l:"Ads Spend",s:"this period"}
-  ].map(t=>`<div class="t"><div class="v ${t.cls||''}">${t.v}</div><div class="l">${t.l}</div><div class="s">${t.s}</div></div>`).join("");
-  // chart (daily)
-  document.getElementById("chTitle").textContent = "Leads per day · " + (mf==="all"?"Mar 27 – Jun 24":monthLbl(mf));
-  const labels=[],data=[];const cur=new Date(a+"T00:00:00"),end=new Date(b+"T00:00:00");
-  while(cur<=end){const iso=isoLocal(cur);labels.push(cur.toLocaleDateString("en-US",{month:"short",day:"numeric"}));data.push(LEADS.filter(l=>l.d===iso).length);cur.setDate(cur.getDate()+1);}
-  if(chart)chart.destroy();
-  chart=new Chart(document.getElementById("chBar"),{type:"bar",data:{labels,datasets:[{label:"Leads",data,backgroundColor:"#2f6fb0",borderRadius:4,maxBarThickness:18}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:"#9aa6b3",maxRotation:0,autoSkip:true,maxTicksLimit:10,font:{size:10}}},y:{grid:{color:"#eef1f5"},border:{display:false},ticks:{color:"#9aa6b3",precision:0,font:{size:10}}}}}});
+    {v:usd(spendOf()),l:"Ads Spend",s:"this period",cls:""}
+  ];
+  var bh="";
+  for(var i=0;i<tiles.length;i++){var t=tiles[i];
+    bh+='<div class="t"><div class="v '+t.cls+'">'+t.v+'</div><div class="l">'+t.l+'</div><div class="s">'+t.s+'</div></div>';
+  }
+  document.getElementById("band").innerHTML=bh;
+  document.getElementById("chTitle").textContent="Leads per day - "+(mf==="all"?"Mar 27 to Jun 24":monthLbl(mf));
+  buildChart();
   renderTable();
 }
-function passes(l){if(q&&!(l.n.toLowerCase().includes(q)||l.sv.toLowerCase().includes(q)))return false;return true;}
-function renderTable(){
-  const list=scopeLeads().filter(passes).sort((a,b)=>b.d.localeCompare(a.d));
-  document.getElementById("leadcount").textContent=list.length+" lead"+(list.length===1?"":"s");
-  document.getElementById("rows").innerHTML=list.map(l=>{const c=CH[chOf(l)];return `<tr><td>${l.d}</td><td class="name">${l.n}</td><td><span class="
+
+sel.addEventListener("change",function(e){mf=e.target.value;renderAll();});
+document.getElementById("search").addEventListener("input",function(e){q=e.target.value.toLowerCase().trim();renderTable();});
+renderAll();
+</script>
+</body>
+</html>
