@@ -103,14 +103,16 @@
 </div>
 
 <script>
-var ASOF="2026-06-26";
-var WIN={from:"2026-03-29",to:"2026-06-26"};
-var SPEND={"2026-06":5064.63,"2026-05":923.06,"2026-04":3233.54,"2026-03":257.72};
-var ALL_SPEND=9478.95;
-var CALLS={"2026-06":{ads:0,cc:1,web:3},"2026-05":{ads:0,cc:0,web:0},"2026-04":{ads:1,cc:0,web:0},"2026-03":{ads:1,cc:0,web:0}};
-var LSA={"2026-06":{ph:0,msg:0},"2026-05":{ph:3,msg:0},"2026-04":{ph:5,msg:1},"2026-03":{ph:0,msg:0}};
+var ASOF="2026-06-29";
+var WIN={from:"2026-04-01",to:"2026-06-29"};
+var SPEND={"2026-06":5341.70,"2026-05":923.06,"2026-04":3233.54};
+var ALL_SPEND=9498.30;
+var CALLS={"2026-06":{ads:0,cc:1,web:3},"2026-05":{ads:0,cc:0,web:0},"2026-04":{ads:1,cc:0,web:0}};
+var LSA={"2026-06":{ph:0,msg:0},"2026-05":{ph:3,msg:0},"2026-04":{ph:5,msg:1}};
 var PAID=new Set(["Sue Moe","Brian L Sarenpa","Megan LaRocque","Darlene Harper","Erik Linklater"]);
 var LEADS=[
+ {d:"2026-06-27",n:"Paul Mason",sv:"Roofing (warranty)"},{d:"2026-06-27",n:"Eric Simmer",sv:"Roofing / Siding (hail)"},
+ {d:"2026-06-26",n:"Vicky Marsala",sv:"Roofing / Siding"},
  {d:"2026-06-24",n:"Diann Oliver",sv:"Renovation"},{d:"2026-06-24",n:"Emily Thomas",sv:"Roofing"},
  {d:"2026-06-23",n:"Susan Smith",sv:"Roofing"},{d:"2026-06-23",n:"Sue Moe",sv:"Roofing (leak)"},{d:"2026-06-22",n:"Brian L Sarenpa",sv:"Roofing (hail)"},
  {d:"2026-06-18",n:"Brandon Loye",sv:"Windows / Roofing"},{d:"2026-06-14",n:"Santipap May",sv:"Roofing (hail)"},
@@ -134,8 +136,7 @@ var LEADS=[
  {d:"2026-04-18",n:"Robert Anast",sv:"Roofing / Siding (hail)"},{d:"2026-04-17",n:"Brenten Witt",sv:"Roofing / Siding (hail)"},
  {d:"2026-04-16",n:"Kevin Haldeman",sv:"Roofing (hail)"},{d:"2026-04-13",n:"Judy Krivak",sv:"Warranty"},
  {d:"2026-04-12",n:"Ken",sv:"Roofing"},{d:"2026-04-09",n:"Yiwu Yu",sv:"Roofing"},
- {d:"2026-04-02",n:"Tim Stahl",sv:"Roofing (hail)"},{d:"2026-03-30",n:"Louis Cervantes",sv:"Siding"},
- {d:"2026-03-29",n:"Paul Mason",sv:"Roofing"}
+ {d:"2026-04-02",n:"Tim Stahl",sv:"Roofing (hail)"}
 ];
 
 function usd(n){return "$"+Math.round(n).toLocaleString();}
@@ -207,7 +208,7 @@ function renderAll(){
   document.getElementById("lsaTotal").textContent=lm.ph+lm.msg;
   document.getElementById("lsaPhone").textContent=lm.ph;
   document.getElementById("lsaMsg").textContent=lm.msg;
-  document.getElementById("chTitle").textContent="Leads per day - "+(mf==="all"?"Mar 27 to Jun 24":monthLbl(mf));
+  document.getElementById("chTitle").textContent="Leads per day - "+(mf==="all"?(dmy(WIN.from)+" to "+dmy(WIN.to)):monthLbl(mf));
   buildChart();
   renderTable();
 }
