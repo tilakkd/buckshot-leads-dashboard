@@ -92,7 +92,7 @@
   <div class="sec"><span class="bul" style="background:var(--brand)"></span><h2>All Leads</h2><span class="view" id="leadcount">-</span></div>
   <div class="tablecard">
     <div class="toolbar"><span class="sp"></span><input id="search" placeholder="Search name or service..."></div>
-    <div class="tscroll"><table><thead><tr><th>Date</th><th>Contact</th><th>Channel</th><th>Service</th><th>Campaign</th><th>Ad group</th><th>Keyword</th></tr></thead><tbody id="rows"></tbody></table></div>
+    <div class="tscroll"><table><thead><tr><th>Date</th><th>Contact</th><th>Channel</th><th>Campaign</th><th>Ad group</th><th>Keyword</th></tr></thead><tbody id="rows"></tbody></table></div>
   </div>
 
   <div class="sec"><span class="bul" style="background:var(--paid)"></span><h2 id="chTitle">Leads per day</h2></div>
@@ -199,8 +199,8 @@ function renderTable(){
   document.getElementById("leadcount").textContent=list.length+(list.length===1?" lead":" leads");
   var html="";
   for(var i=0;i<list.length;i++){var l=list[i], c=CH[chOf(l)];
-    html+='<tr><td>'+l.d+'</td><td class="name">'+l.n+'</td><td><span class="pill '+c.cls+'">'+c.nm+'</span></td><td>'+l.sv+'</td><td class="attr">'+campOf(l)+'</td><td class="attr">'+agOf(l)+'</td><td class="attr">'+kwOf(l)+'</td></tr>';}
-  document.getElementById("rows").innerHTML=html||'<tr><td colspan="7" class="src" style="text-align:center;padding:26px">No leads in this period.</td></tr>';
+    html+='<tr><td>'+l.d+'</td><td class="name">'+l.n+'</td><td><span class="pill '+c.cls+'">'+c.nm+'</span></td><td class="attr">'+campOf(l)+'</td><td class="attr">'+agOf(l)+'</td><td class="attr">'+kwOf(l)+'</td></tr>';}
+  document.getElementById("rows").innerHTML=html||'<tr><td colspan="6" class="src" style="text-align:center;padding:26px">No leads in this period.</td></tr>';
 }
 
 function renderAll(){
