@@ -46,13 +46,14 @@
   .toolbar .sp{flex:1}
   .toolbar input{background:#fff;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:7px 12px;font-size:12px;min-width:190px;outline:none}
   .tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-  table{width:100%;border-collapse:collapse;min-width:480px}
+  table{width:100%;border-collapse:collapse;min-width:760px}
   th{text-align:left;font-size:10.5px;letter-spacing:.4px;text-transform:uppercase;color:var(--mut);padding:11px 16px;background:#f7f9fb;border-bottom:1px solid var(--line);font-weight:700}
   td{padding:12px 16px;border-bottom:1px solid var(--line2);font-size:12.5px;color:var(--ink2)}
   tbody tr:last-child td{border-bottom:none}tbody tr:hover{background:#f9fbfc}
   .pill{display:inline-block;font-size:10.5px;font-weight:600;padding:3px 10px;border-radius:999px;white-space:nowrap}
   .p-paid{background:#eaf2fa;color:var(--paid)}.p-org{background:#e8f5ee;color:var(--organic)}
   .name{font-weight:600;color:var(--ink)}.src{font-size:11px;color:var(--faint)}
+  .attr{font-size:11.5px;color:var(--mut)}
   footer{margin-top:26px;color:var(--mut);font-size:11px;line-height:1.7;border-top:1px solid var(--line);padding-top:16px}
   @media(max-width:900px){.kpiband{grid-template-columns:repeat(2,1fr)}.c2{grid-template-columns:1fr}}
   @media(max-width:600px){
@@ -91,14 +92,14 @@
   <div class="sec"><span class="bul" style="background:var(--brand)"></span><h2>All Leads</h2><span class="view" id="leadcount">-</span></div>
   <div class="tablecard">
     <div class="toolbar"><span class="sp"></span><input id="search" placeholder="Search name or service..."></div>
-    <div class="tscroll"><table><thead><tr><th>Date</th><th>Contact</th><th>Channel</th><th>Service</th></tr></thead><tbody id="rows"></tbody></table></div>
+    <div class="tscroll"><table><thead><tr><th>Date</th><th>Contact</th><th>Channel</th><th>Service</th><th>Campaign</th><th>Ad group</th><th>Keyword</th></tr></thead><tbody id="rows"></tbody></table></div>
   </div>
 
   <div class="sec"><span class="bul" style="background:var(--paid)"></span><h2 id="chTitle">Leads per day</h2></div>
   <div class="card"><div class="chartbox"><canvas id="chBar"></canvas></div></div>
 
   <footer>
-    Period filter applies to the whole dashboard. Channel: <b>Paid</b> = ad click (gclid / utm cpc); <b>Organic</b> = everything else. Form leads: Flamingo (test and B2B-solicitation excluded). Phone calls and Ads spend: Google Ads account (exact). LSA leads from Local Services Ads (account 4026037149).
+    Period filter applies to the whole dashboard. Channel: <b>Paid</b> = ad click (gclid / utm cpc); <b>Organic</b> = everything else. Form leads: Flamingo (test and B2B-solicitation excluded). Phone calls and Ads spend: Google Ads account (exact). LSA leads from Local Services Ads (account 4026037149). <b>Campaign / Ad group / Keyword</b> shown for paid form leads only (from the lead’s captured gclid/UTM: campaign-id & ad-id mapped to names, keyword = matched keyword). Organic leads and paid leads with no UTM captured show “—”. Google does not pass the actual typed search term per lead, so only the matched keyword is available.
   </footer>
 </div>
 
@@ -110,16 +111,33 @@ var ALL_SPEND=9367.39;
 var CALLS={"2026-06":{ads:0,cc:1,web:3},"2026-05":{ads:0,cc:0,web:0},"2026-04":{ads:1,cc:0,web:0}};
 var LSA={"2026-06":{ph:0,msg:0},"2026-05":{ph:3,msg:0},"2026-04":{ph:5,msg:1}};
 var PAID=new Set(["Sue Moe","Brian L Sarenpa","Megan LaRocque","Darlene Harper","Erik Linklater"]);
+// Paid-lead attribution maps (campaign-id -> name, ad-id -> ad group name). Extend on each run when new IDs appear.
+var CAMP_MAP={
+ "23713998408":"Leads - Roofing (PC)",
+ "23954856689":"BGC | SKAG | Roofing Contractor Madison WI",
+ "23703646012":"Residential Roofing - Leads (PC)",
+ "23755832804":"Buckshot - Storm Damage - Madison Area",
+ "23665724397":"Website traffic-Search-Roofing"
+};
+var AG_MAP={
+ "812318031563":"LOCAL MADISON AREA",
+ "812846896997":"SKAG | Roof Replacement Madison",
+ "813347632717":"SKAG | Roofing Contractor Madison",
+ "806596892291":"LOCAL MADISON AREA"
+};
+function campOf(l){return l.cid?(CAMP_MAP[l.cid]||l.cid):"\u2014";}
+function agOf(l){return l.adid?(AG_MAP[l.adid]||l.adid):"\u2014";}
+function kwOf(l){return l.kw?l.kw:"\u2014";}
 var LEADS=[
  {d:"2026-06-29",n:"Robert Morris",sv:"Roofing (replacement)"},
  {d:"2026-06-27",n:"Paul Mason",sv:"Roofing (warranty)"},{d:"2026-06-27",n:"Eric Simmer",sv:"Roofing / Siding (hail)"},
  {d:"2026-06-26",n:"Vicky Marsala",sv:"Roofing / Siding"},
  {d:"2026-06-24",n:"Diann Oliver",sv:"Renovation"},{d:"2026-06-24",n:"Emily Thomas",sv:"Roofing"},
- {d:"2026-06-23",n:"Susan Smith",sv:"Roofing"},{d:"2026-06-23",n:"Sue Moe",sv:"Roofing (leak)"},{d:"2026-06-22",n:"Brian L Sarenpa",sv:"Roofing (hail)"},
+ {d:"2026-06-23",n:"Susan Smith",sv:"Roofing"},{d:"2026-06-23",n:"Sue Moe",sv:"Roofing (leak)",cid:"23954856689",adid:"813347632717",kw:"roofing contractor madison wi"},{d:"2026-06-22",n:"Brian L Sarenpa",sv:"Roofing (hail)",cid:"23713998408",adid:"812318031563",kw:"madison roof repair"},
  {d:"2026-06-18",n:"Brandon Loye",sv:"Windows / Roofing"},{d:"2026-06-14",n:"Santipap May",sv:"Roofing (hail)"},
- {d:"2026-06-12",n:"Jason Lukeson",sv:"Remodel"},{d:"2026-06-09",n:"Megan LaRocque",sv:"Roofing"},
+ {d:"2026-06-12",n:"Jason Lukeson",sv:"Remodel"},{d:"2026-06-09",n:"Megan LaRocque",sv:"Roofing",cid:"23713998408",adid:"812318031563",kw:"madison roof repair"},
  {d:"2026-06-09",n:"Amy Kenny",sv:"Roofing"},{d:"2026-06-08",n:"Downspout repair",sv:"Gutters"},
- {d:"2026-06-07",n:"Darlene Harper",sv:"Roofing"},{d:"2026-06-05",n:"Scott Usher",sv:"Roofing (service)"},
+ {d:"2026-06-07",n:"Darlene Harper",sv:"Roofing",cid:"23713998408",adid:"806596892291",kw:"madison roof repair"},{d:"2026-06-05",n:"Scott Usher",sv:"Roofing (service)"},
  {d:"2026-06-03",n:"Emily Slatter",sv:"Roofing / Siding"},{d:"2026-05-26",n:"Ron Wanless",sv:"Roofing"},
  {d:"2026-05-21",n:"Aaron Pruefert",sv:"Siding (commercial)"},{d:"2026-05-21",n:"Dan Brennan",sv:"Roofing"},
  {d:"2026-05-20",n:"Steven Moser",sv:"Roofing"},{d:"2026-05-19",n:"Lisa Lutz",sv:"Roofing / Gutters"},
@@ -181,8 +199,8 @@ function renderTable(){
   document.getElementById("leadcount").textContent=list.length+(list.length===1?" lead":" leads");
   var html="";
   for(var i=0;i<list.length;i++){var l=list[i], c=CH[chOf(l)];
-    html+='<tr><td>'+l.d+'</td><td class="name">'+l.n+'</td><td><span class="pill '+c.cls+'">'+c.nm+'</span></td><td>'+l.sv+'</td></tr>';}
-  document.getElementById("rows").innerHTML=html||'<tr><td colspan="4" class="src" style="text-align:center;padding:26px">No leads in this period.</td></tr>';
+    html+='<tr><td>'+l.d+'</td><td class="name">'+l.n+'</td><td><span class="pill '+c.cls+'">'+c.nm+'</span></td><td>'+l.sv+'</td><td class="attr">'+campOf(l)+'</td><td class="attr">'+agOf(l)+'</td><td class="attr">'+kwOf(l)+'</td></tr>';}
+  document.getElementById("rows").innerHTML=html||'<tr><td colspan="7" class="src" style="text-align:center;padding:26px">No leads in this period.</td></tr>';
 }
 
 function renderAll(){
