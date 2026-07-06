@@ -104,12 +104,12 @@
 </div>
 
 <script>
-var ASOF="2026-07-04";
-var WIN={from:"2026-04-06",to:"2026-07-04"};
-var SPEND={"2026-07":0.00,"2026-06":5341.70,"2026-05":923.06,"2026-04":2826.19};
-var ALL_SPEND=9090.95;
+var ASOF="2026-07-06";
+var WIN={from:"2026-04-08",to:"2026-07-06"};
+var SPEND={"2026-07":0.00,"2026-06":5341.70,"2026-05":923.06,"2026-04":2138.53};
+var ALL_SPEND=8403.29;
 var CALLS={"2026-07":{ads:0,cc:0,web:0},"2026-06":{ads:0,cc:1,web:3},"2026-05":{ads:0,cc:0,web:0},"2026-04":{ads:0,cc:0,web:0}};
-var LSA={"2026-07":{ph:0,msg:0},"2026-06":{ph:0,msg:0},"2026-05":{ph:3,msg:0},"2026-04":{ph:5,msg:1}};
+var LSA={"2026-07":{ph:0,msg:0},"2026-06":{ph:0,msg:0},"2026-05":{ph:3,msg:0},"2026-04":{ph:4,msg:1}};
 var PAID=new Set(["Sue Moe","Brian L Sarenpa","Megan LaRocque","Darlene Harper","Erik Linklater"]);
 // Paid-lead attribution maps (campaign-id -> name, ad-id -> ad group name). Extend on each run when new IDs appear.
 var CAMP_MAP={
@@ -129,6 +129,7 @@ function campOf(l){return l.cid?(CAMP_MAP[l.cid]||l.cid):"\u2014";}
 function agOf(l){return l.adid?(AG_MAP[l.adid]||l.adid):"\u2014";}
 function kwOf(l){return l.kw?l.kw:"\u2014";}
 var LEADS=[
+ {d:"2026-07-05",n:"Jacqueline Vinje-Shields",sv:"Roofing (replacement)"},
  {d:"2026-07-01",n:"Sue Duffy",sv:"Roofing (hail/storm inspection)"},{d:"2026-07-01",n:"Edwin Cortes",sv:"Roofing / Siding / Gutters"},
  {d:"2026-06-29",n:"Robert Morris",sv:"Roofing (replacement)"},
  {d:"2026-06-27",n:"Paul Mason",sv:"Roofing (warranty)"},{d:"2026-06-27",n:"Eric Simmer",sv:"Roofing / Siding (hail)"},
