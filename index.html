@@ -104,12 +104,12 @@
 </div>
 
 <script>
-var ASOF="2026-07-10";
-var WIN={from:"2026-04-12",to:"2026-07-10"};
-var SPEND={"2026-07":157.42,"2026-06":5341.70,"2026-05":923.06,"2026-04":1377.52};
-var ALL_SPEND=7799.70;
+var ASOF="2026-07-14";
+var WIN={from:"2026-04-16",to:"2026-07-14"};
+var SPEND={"2026-07":157.42,"2026-06":5341.70,"2026-05":923.06,"2026-04":321.58};
+var ALL_SPEND=6743.76;
 var CALLS={"2026-07":{ads:0,cc:0,web:0},"2026-06":{ads:0,cc:1,web:3},"2026-05":{ads:0,cc:0,web:0},"2026-04":{ads:0,cc:0,web:0}};
-var LSA={"2026-07":{ph:0,msg:0},"2026-06":{ph:0,msg:0},"2026-05":{ph:3,msg:0},"2026-04":{ph:4,msg:1}};
+var LSA={"2026-07":{ph:0,msg:0},"2026-06":{ph:0,msg:0},"2026-05":{ph:3,msg:0},"2026-04":{ph:1,msg:1}};
 var PAID=new Set(["Sue Moe","Brian L Sarenpa","Megan LaRocque","Darlene Harper","Erik Linklater"]);
 // Paid-lead attribution maps (campaign-id -> name, ad-id -> ad group name). Extend on each run when new IDs appear.
 var CAMP_MAP={
@@ -156,8 +156,7 @@ var LEADS=[
  {d:"2026-04-23",n:"Cameron Seiser",sv:"Siding / exterior"},{d:"2026-04-21",n:"Brendan Weldon",sv:"Roofing"},
  {d:"2026-04-21",n:"Joseph Valentine",sv:"Roofing (storm)"},{d:"2026-04-19",n:"Joe Kennedy",sv:"Roofing"},
  {d:"2026-04-18",n:"Robert Anast",sv:"Roofing / Siding (hail)"},{d:"2026-04-17",n:"Brenten Witt",sv:"Roofing / Siding (hail)"},
- {d:"2026-04-16",n:"Kevin Haldeman",sv:"Roofing (hail)"},{d:"2026-04-13",n:"Judy Krivak",sv:"Warranty"},
- {d:"2026-04-12",n:"Ken",sv:"Roofing"}
+ {d:"2026-04-16",n:"Kevin Haldeman",sv:"Roofing (hail)"}
 ];
 
 function usd(n){return "$"+Math.round(n).toLocaleString();}
