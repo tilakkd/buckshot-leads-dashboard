@@ -104,10 +104,10 @@
 </div>
 
 <script>
-var ASOF="2026-07-21";
-var WIN={from:"2026-04-23",to:"2026-07-21"};
-var SPEND={"2026-07":157.42,"2026-06":5341.70,"2026-05":923.06,"2026-04":207.61};
-var ALL_SPEND=6629.79;
+var ASOF="2026-07-22";
+var WIN={from:"2026-04-24",to:"2026-07-22"};
+var SPEND={"2026-07":157.42,"2026-06":5341.70,"2026-05":923.06,"2026-04":114.41};
+var ALL_SPEND=6536.60;
 var CALLS={"2026-07":{ads:0,cc:0,web:0},"2026-06":{ads:0,cc:1,web:3},"2026-05":{ads:0,cc:0,web:0},"2026-04":{ads:0,cc:0,web:0}};
 var LSA={"2026-07":{ph:1,msg:0},"2026-06":{ph:0,msg:0},"2026-05":{ph:3,msg:0},"2026-04":{ph:1,msg:1}};
 var PAID=new Set(["Sue Moe","Brian L Sarenpa","Megan LaRocque","Darlene Harper","Erik Linklater"]);
@@ -129,6 +129,7 @@ function campOf(l){return l.cid?(CAMP_MAP[l.cid]||l.cid):"\u2014";}
 function agOf(l){return l.adid?(AG_MAP[l.adid]||l.adid):"\u2014";}
 function kwOf(l){return l.kw?l.kw:"\u2014";}
 var LEADS=[
+ {d:"2026-07-21",n:"Anna",sv:"Roofing (chimney flashing leak)"},{d:"2026-07-21",n:"Michael Barclay",sv:"Roofing (replacement, hail)"},
  {d:"2026-07-18",n:"Rea Bruce",sv:"Remodel (design consult)"},
  {d:"2026-07-12",n:"Ashley Brown",sv:"Roofing"},
  {d:"2026-07-06",n:"Aaron Mullins",sv:"Roofing / Siding / Gutters (storm)"},
@@ -153,9 +154,7 @@ var LEADS=[
  {d:"2026-04-30",n:"Angela Flora",sv:"Renovation"},{d:"2026-04-30",n:"Erik Linklater",sv:"Roofing (chimney)"},
  {d:"2026-04-30",n:"Susan Donahoe",sv:"Siding"},{d:"2026-04-29",n:"Margaret Greco",sv:"Roofing"},
  {d:"2026-04-28",n:"Penny Tahtinen",sv:"Roofing (hail)"},{d:"2026-04-28",n:"Jonathan Mosterd",sv:"Roofing (hail)"},
- {d:"2026-04-27",n:"Maria D Riordan",sv:"Roofing / Siding"},{d:"2026-04-24",n:"Michael J Wilson",sv:"Siding"},
- {d:"2026-04-23",n:"Takushi Kohmoto",sv:"Roofing / Siding (hail)"},{d:"2026-04-23",n:"Benjamin Nichols",sv:"Remodel"},
- {d:"2026-04-23",n:"Cameron Seiser",sv:"Siding / exterior"}
+ {d:"2026-04-27",n:"Maria D Riordan",sv:"Roofing / Siding"},{d:"2026-04-24",n:"Michael J Wilson",sv:"Siding"}
 ];
 
 function usd(n){return "$"+Math.round(n).toLocaleString();}
