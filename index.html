@@ -104,13 +104,13 @@
 </div>
 
 <script>
-var ASOF="2026-07-23";
-var WIN={from:"2026-04-25",to:"2026-07-23"};
-var SPEND={"2026-07":157.42,"2026-06":5341.70,"2026-05":923.06,"2026-04":91.75};
-var ALL_SPEND=6513.94;
+var ASOF="2026-07-24";
+var WIN={from:"2026-04-26",to:"2026-07-24"};
+var SPEND={"2026-07":157.42,"2026-06":5341.70,"2026-05":923.06,"2026-04":86.80};
+var ALL_SPEND=6508.99;
 var CALLS={"2026-07":{ads:0,cc:0,web:0},"2026-06":{ads:0,cc:1,web:3},"2026-05":{ads:0,cc:0,web:0},"2026-04":{ads:0,cc:0,web:0}};
 var LSA={"2026-07":{ph:1,msg:0},"2026-06":{ph:0,msg:0},"2026-05":{ph:3,msg:0},"2026-04":{ph:1,msg:1}};
-var PAID=new Set(["Sue Moe","Brian L Sarenpa","Megan LaRocque","Darlene Harper","Erik Linklater"]);
+var PAID=new Set(["Sue Moe","Brian L Sarenpa","Megan LaRocque","Darlene Harper"]);
 // Paid-lead attribution maps (campaign-id -> name, ad-id -> ad group name). Extend on each run when new IDs appear.
 var CAMP_MAP={
  "23713998408":"Leads - Roofing (PC)",
@@ -129,31 +129,57 @@ function campOf(l){return l.cid?(CAMP_MAP[l.cid]||l.cid):"\u2014";}
 function agOf(l){return l.adid?(AG_MAP[l.adid]||l.adid):"\u2014";}
 function kwOf(l){return l.kw?l.kw:"\u2014";}
 var LEADS=[
- {d:"2026-07-21",n:"Anna",sv:"Roofing (chimney flashing leak)"},{d:"2026-07-21",n:"Michael Barclay",sv:"Roofing (replacement, hail)"},
+ {d:"2026-07-21",n:"Anna",sv:"Roofing (chimney flashing leak)"},
+ {d:"2026-07-21",n:"Michael Barclay",sv:"Roofing (replacement, hail)"},
  {d:"2026-07-18",n:"Rea Bruce",sv:"Remodel (design consult)"},
  {d:"2026-07-12",n:"Ashley Brown",sv:"Roofing"},
  {d:"2026-07-06",n:"Aaron Mullins",sv:"Roofing / Siding / Gutters (storm)"},
  {d:"2026-07-05",n:"Jacqueline Vinje-Shields",sv:"Roofing (replacement)"},
- {d:"2026-07-01",n:"Sue Duffy",sv:"Roofing (hail/storm inspection)"},{d:"2026-07-01",n:"Edwin Cortes",sv:"Roofing / Siding / Gutters"},
+ {d:"2026-07-01",n:"Sue Duffy",sv:"Roofing (hail/storm inspection)"},
+ {d:"2026-07-01",n:"Edwin Cortes",sv:"Roofing / Siding / Gutters"},
  {d:"2026-06-29",n:"Robert Morris",sv:"Roofing (replacement)"},
- {d:"2026-06-27",n:"Paul Mason",sv:"Roofing (warranty)"},{d:"2026-06-27",n:"Eric Simmer",sv:"Roofing / Siding (hail)"},
+ {d:"2026-06-29",n:"Vicky Cena",sv:"Roofing"},
+ {d:"2026-06-27",n:"Paul Mason",sv:"Roofing (warranty)"},
+ {d:"2026-06-27",n:"Eric Simmer",sv:"Roofing / Siding (hail)"},
  {d:"2026-06-26",n:"Vicky Marsala",sv:"Roofing / Siding"},
- {d:"2026-06-24",n:"Diann Oliver",sv:"Renovation"},{d:"2026-06-24",n:"Emily Thomas",sv:"Roofing"},
- {d:"2026-06-23",n:"Susan Smith",sv:"Roofing"},{d:"2026-06-23",n:"Sue Moe",sv:"Roofing (leak)",cid:"23954856689",adid:"813347632717",kw:"roofing contractor madison wi"},{d:"2026-06-22",n:"Brian L Sarenpa",sv:"Roofing (hail)",cid:"23713998408",adid:"812318031563",kw:"madison roof repair"},
- {d:"2026-06-18",n:"Brandon Loye",sv:"Windows / Roofing"},{d:"2026-06-14",n:"Santipap May",sv:"Roofing (hail)"},
- {d:"2026-06-12",n:"Jason Lukeson",sv:"Remodel"},{d:"2026-06-09",n:"Megan LaRocque",sv:"Roofing",cid:"23713998408",adid:"812318031563",kw:"madison roof repair"},
- {d:"2026-06-09",n:"Amy Kenny",sv:"Roofing"},{d:"2026-06-08",n:"Downspout repair",sv:"Gutters"},
- {d:"2026-06-07",n:"Darlene Harper",sv:"Roofing",cid:"23713998408",adid:"806596892291",kw:"madison roof repair"},{d:"2026-06-05",n:"Scott Usher",sv:"Roofing (service)"},
- {d:"2026-06-03",n:"Emily Slatter",sv:"Roofing / Siding"},{d:"2026-05-26",n:"Ron Wanless",sv:"Roofing"},
- {d:"2026-05-21",n:"Aaron Pruefert",sv:"Siding (commercial)"},{d:"2026-05-21",n:"Dan Brennan",sv:"Roofing"},
- {d:"2026-05-20",n:"Steven Moser",sv:"Roofing"},{d:"2026-05-19",n:"Lisa Lutz",sv:"Roofing / Gutters"},
- {d:"2026-05-19",n:"Daniel Winstanley",sv:"Appointment"},{d:"2026-05-19",n:"Vaughn Porter",sv:"Roofing / Siding / Gutters"},
- {d:"2026-05-17",n:"Dennis Dominguez",sv:"Remodel"},{d:"2026-05-08",n:"Nicole Punzel",sv:"Roofing (hail)"},
- {d:"2026-05-04",n:"Olivia Swodzinski",sv:"Roofing / Siding (hail)"},{d:"2026-05-04",n:"Jean Sutton",sv:"Roofing (hail)"},
- {d:"2026-05-03",n:"Susan Donahoe",sv:"Siding"},{d:"2026-04-30",n:"Terry Richardt",sv:"Roofing"},
- {d:"2026-04-30",n:"Angela Flora",sv:"Renovation"},{d:"2026-04-30",n:"Erik Linklater",sv:"Roofing (chimney)"},
- {d:"2026-04-30",n:"Susan Donahoe",sv:"Siding"},{d:"2026-04-29",n:"Margaret Greco",sv:"Roofing"},
- {d:"2026-04-28",n:"Penny Tahtinen",sv:"Roofing (hail)"},{d:"2026-04-28",n:"Jonathan Mosterd",sv:"Roofing (hail)"},
+ {d:"2026-06-25",n:"Susan Smith",sv:"Roofing"},
+ {d:"2026-06-25",n:"Roman Roy",sv:"Roofing"},
+ {d:"2026-06-24",n:"Diann Oliver",sv:"Renovation"},
+ {d:"2026-06-24",n:"Emily Thomas",sv:"Roofing"},
+ {d:"2026-06-23",n:"Susan Smith",sv:"Roofing"},
+ {d:"2026-06-23",n:"Sue Moe",sv:"Roofing (leak)",cid:"23954856689",adid:"813347632717",kw:"roofing contractor madison wi"},
+ {d:"2026-06-22",n:"Brian L Sarenpa",sv:"Roofing (hail)",cid:"23713998408",adid:"812318031563",kw:"madison roof repair"},
+ {d:"2026-06-19",n:"Joshua Cirilo",sv:"Roofing"},
+ {d:"2026-06-18",n:"Brandon Loye",sv:"Windows / Roofing"},
+ {d:"2026-06-18",n:"Maria Alvarez",sv:"Roofing"},
+ {d:"2026-06-14",n:"Santipap May",sv:"Roofing (hail)"},
+ {d:"2026-06-12",n:"Jason Lukeson",sv:"Remodel"},
+ {d:"2026-06-09",n:"Amy Kenny",sv:"Roofing"},
+ {d:"2026-06-09",n:"Megan LaRocque",sv:"Roofing",cid:"23713998408",adid:"812318031563",kw:"madison roof repair"},
+ {d:"2026-06-08",n:"Richard Jablonski",sv:"Gutters (downspout repair)"},
+ {d:"2026-06-07",n:"Darlene Harper",sv:"Roofing",cid:"23713998408",adid:"806596892291",kw:"madison roof repair"},
+ {d:"2026-06-05",n:"Scott Usher",sv:"Roofing (service)"},
+ {d:"2026-06-03",n:"Emily Slatter",sv:"Roofing / Siding"},
+ {d:"2026-05-29",n:"Judy Jones",sv:"Roofing (review request)"},
+ {d:"2026-05-26",n:"Ron Wanless",sv:"Roofing"},
+ {d:"2026-05-21",n:"Aaron Pruefert",sv:"Siding (commercial)"},
+ {d:"2026-05-21",n:"Dan Brennan",sv:"Roofing"},
+ {d:"2026-05-20",n:"Steven Moser",sv:"Roofing"},
+ {d:"2026-05-19",n:"Lisa Lutz",sv:"Roofing / Gutters"},
+ {d:"2026-05-19",n:"Daniel Winstanley",sv:"Appointment"},
+ {d:"2026-05-19",n:"Vaughn Porter",sv:"Roofing / Siding / Gutters"},
+ {d:"2026-05-17",n:"Dennis Dominguez",sv:"Remodel"},
+ {d:"2026-05-08",n:"Nicole Punzel",sv:"Roofing (hail)"},
+ {d:"2026-05-04",n:"Olivia Swodzinski",sv:"Roofing / Siding (hail)"},
+ {d:"2026-05-04",n:"Jean Sutton",sv:"Roofing (hail)"},
+ {d:"2026-05-03",n:"Susan Donahoe",sv:"Siding"},
+ {d:"2026-04-30",n:"Terry Richardt",sv:"Roofing"},
+ {d:"2026-04-30",n:"Angela Flora",sv:"Renovation"},
+ {d:"2026-04-30",n:"Erik Linklater",sv:"Roofing (chimney)"},
+ {d:"2026-04-30",n:"Susan Donahoe",sv:"Siding"},
+ {d:"2026-04-29",n:"Margaret Greco",sv:"Roofing"},
+ {d:"2026-04-28",n:"Penny Tahtinen",sv:"Roofing (hail)"},
+ {d:"2026-04-28",n:"Jonathan Mosterd",sv:"Roofing (hail)"},
  {d:"2026-04-27",n:"Maria D Riordan",sv:"Roofing / Siding"}
 ];
 
